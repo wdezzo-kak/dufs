@@ -12,6 +12,7 @@
 </head>
 
 <body>
+  <!-- Desktop View -->
   <div class="head">
     <div class="breadcrumb"></div>
     <div class="toolbox">
@@ -96,7 +97,7 @@
       <div class="save-btn hidden" title="Save file">
         <svg viewBox="0 0 1024 1024" width="24" height="24">
           <path
-            d="M426.666667 682.666667v42.666666h170.666666v-42.666666h-170.666666z m-42.666667-85.333334h298.666667v128h42.666666V418.133333L605.866667 298.666667H298.666667v426.666666h42.666666v-128h42.666667z m260.266667-384L810.666667 379.733333V810.666667H213.333333V213.333333h430.933334zM341.333333 341.333333h85.333334v170.666667H341.333333V341.333333z"
+            d="M426.666667 682.666667v42.666666h170.666666v-42.666666h-170.666666zM384 597.333333h298.666667v128h42.666666V418.133333L605.866667 298.666667H384v426.666666h42.666666v-128h42.666667zM644.266667 213.333333L810.666667 379.733333V810.666667H213.333333V213.333333h430.933334zM384 384h85.333334v170.666667H384V384z"
             fill="#444444" p-id="8311"></path>
         </svg>
       </div>
@@ -125,6 +126,128 @@
       <textarea id="editor" class="editor hidden" aria-label="Editor" cols="10"></textarea>
     </div>
   </div>
+
+  <!-- Mobile View -->
+  <div class="mobile-view">
+    <div class="mobile-header">
+      <button class="mobile-header home-btn" title="Root">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+      </button>
+      <div class="mobile-search">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input type="text" placeholder="Search files..." id="mobile-search" autocomplete="off">
+      </div>
+    </div>
+    <div class="mobile-list-header">
+      <div class="col-name">Name</div>
+      <div class="col-time">Modified</div>
+      <div class="col-actions"></div>
+    </div>
+    <div class="mobile-file-list"></div>
+    <div class="mobile-empty hidden">Empty folder</div>
+    
+    <!-- Mobile Bottom Bar -->
+    <div class="mobile-bottom-bar">
+      <button class="action-btn mobile-download" title="Download folder as zip">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+          </svg>
+        </div>
+        <span class="label">Download</span>
+      </button>
+      <button class="action-btn mobile-upload" title="Upload files">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/>
+          </svg>
+        </div>
+        <span class="label">Upload</span>
+      </button>
+      <button class="action-btn mobile-new-folder" title="New folder">
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-1 8h-3v3h-2v-3h-3v-2h3V9h2v3h3v2z"/>
+          </svg>
+        </div>
+        <span class="label">Folder+</span>
+      </button>
+      <button class="action-btn mobile-new-file" title="New file">
+        <div class="icon-wrap primary">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 14h-3v3h-2v-3H8v-2h3v-3h2v3h3v2zm-3-7V3.5L18.5 9H13z"/>
+          </svg>
+        </div>
+        <span class="label primary">New File</span>
+      </button>
+    </div>
+
+    <!-- Mobile Action Menu -->
+    <div class="mobile-overlay"></div>
+    <div class="mobile-action-menu">
+      <div class="handle"></div>
+      <div class="file-info-header">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6z"/>
+          </svg>
+        </div>
+        <div class="details">
+          <div class="name"></div>
+          <div class="meta"></div>
+        </div>
+      </div>
+      <div class="menu-options">
+        <button class="menu-option" data-action="download">
+          <span class="text">Download</span>
+          <span class="icon-right">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+            </svg>
+          </span>
+        </button>
+        <button class="menu-option" data-action="rename">
+          <span class="text">Rename</span>
+          <span class="icon-right">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+            </svg>
+          </span>
+        </button>
+        <button class="menu-option" data-action="move">
+          <span class="text">Move</span>
+          <span class="icon-right">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"/>
+            </svg>
+          </span>
+        </button>
+        <button class="menu-option" data-action="copy">
+          <span class="text">Copy</span>
+          <span class="icon-right">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+            </svg>
+          </span>
+        </button>
+        <button class="menu-option danger" data-action="delete">
+          <span class="text">Delete</span>
+          <span class="icon-right">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+            </svg>
+          </span>
+        </button>
+      </div>
+      <button class="cancel-btn">Cancel</button>
+    </div>
+  </div>
+  <input type="file" id="mobile-file-input" multiple style="display: none;">
   <template id="index-data">__INDEX_DATA__</template>
   <script src="__ASSETS_PREFIX__index.js"></script>
 </body>

@@ -106,6 +106,23 @@ let $logoutBtn;
  */
 let $userName;
 
+// Mobile elements
+let $mobileView;
+let $mobileFileList;
+let $mobileEmpty;
+let $mobileSearch;
+let $mobileOverlay;
+let $mobileActionMenu;
+let $mobileFileInput;
+let $mobileHomeBtn;
+let selectedMobileIndex = null;
+
+const MOBILE_BREAKPOINT = 768;
+
+function isMobile() {
+  return window.innerWidth < MOBILE_BREAKPOINT;
+}
+
 // Produce table when window loads
 window.addEventListener("DOMContentLoaded", async () => {
   const $indexData = document.getElementById('index-data');
@@ -131,6 +148,16 @@ async function ready() {
   $logoutBtn = document.querySelector(".logout-btn");
   $userName = document.querySelector(".user-name");
 
+  // Mobile elements
+  $mobileView = document.querySelector(".mobile-view");
+  $mobileFileList = document.querySelector(".mobile-file-list");
+  $mobileEmpty = document.querySelector(".mobile-empty");
+  $mobileSearch = document.getElementById("mobile-search");
+  $mobileOverlay = document.querySelector(".mobile-overlay");
+  $mobileActionMenu = document.querySelector(".mobile-action-menu");
+  $mobileFileInput = document.getElementById("mobile-file-input");
+  $mobileHomeBtn = document.querySelector(".mobile-header.home-btn");
+
   addBreadcrumb(DATA.href, DATA.uri_prefix);
 
   if (DATA.kind === "Index") {
@@ -138,6 +165,7 @@ async function ready() {
     document.querySelector(".index-page").classList.remove("hidden");
 
     await setupIndexPage();
+    setupMobileView();
   } else if (DATA.kind === "Edit") {
     document.title = `Edit ${DATA.href} - Dufs`;
     document.querySelector(".editor-page").classList.remove("hidden");
@@ -371,6 +399,214 @@ async function setupIndexPage() {
 
   if (DATA.user) {
     setupDownloadWithToken();
+  }
+}
+
+function setupMobileView() {
+  if (!isMobile()) return;
+
+  $mobileView.classList.add("visible");
+
+  // Home button
+  $mobileHomeBtn.addEventListener("click", () => {
+    const prefix = DATA.uri_prefix.slice(0, -1);
+    location.href = location.origin + prefix + "/";
+  });
+
+  // Search
+  $mobileSearch.value = PARAMS.q || "";
+  $mobileSearch.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      const q = $mobileSearch.value;
+      let href = baseUrl();
+      if (q) {
+        href += "?q=" + encodeURIComponent(q);
+      }
+      location.href = href;
+    }
+  });
+
+  // Bottom bar actions
+  document.querySelector(".mobile-download").addEventListener("click", () => {
+    if (DATA.allow_archive) {
+      const url = baseUrl() + "?zip";
+      window.location.href = url;
+    }
+  });
+
+  document.querySelector(".mobile-upload").addEventListener("click", () => {
+    if (DATA.allow_upload) {
+      $mobileFileInput.click();
+    }
+  });
+
+  $mobileFileInput.addEventListener("change", async (e) => {
+    const files = e.target.files;
+    for (let file of files) {
+      new Uploader(file, []).upload();
+    }
+    $mobileFileInput.value = "";
+  });
+
+  document.querySelector(".mobile-new-folder").addEventListener("click", () => {
+    if (DATA.allow_upload) {
+      const name = prompt("Enter folder name");
+      if (name) createFolder(name);
+    }
+  });
+
+  document.querySelector(".mobile-new-file").addEventListener("click", () => {
+    if (DATA.allow_upload) {
+      const name = prompt("Enter file name");
+      if (name) createFile(name);
+    }
+  });
+
+  // Action menu
+  $mobileOverlay.addEventListener("click", closeMobileMenu);
+  document.querySelector(".mobile-action-menu .cancel-btn").addEventListener("click", closeMobileMenu);
+
+  document.querySelectorAll(".mobile-action-menu .menu-option").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const action = btn.dataset.action;
+      await handleMobileAction(action);
+    });
+  });
+
+  // Render mobile file list
+  renderMobilePaths();
+}
+
+function renderMobilePaths() {
+  if (!isMobile()) return;
+
+  $mobileFileList.innerHTML = "";
+
+  if (DATA.paths && DATA.paths.length > 0) {
+    for (let i = 0; i < DATA.paths.length; i++) {
+      addMobilePath(DATA.paths[i], i);
+    }
+  } else {
+    $mobileEmpty.textContent = DIR_EMPTY_NOTE;
+    $mobileEmpty.classList.remove("hidden");
+  }
+}
+
+function addMobilePath(file, index) {
+  const isDir = file.path_type.endsWith("Dir");
+  const encodedName = encodedStr(file.name);
+  let url = newUrl(file.name);
+  if (isDir) url += "/";
+
+  const meta = isDir 
+    ? formatDirSize(file.size) 
+    : formatFileSize(file.size).join(" ");
+
+  const card = document.createElement("div");
+  card.className = "mobile-file-card";
+  card.innerHTML = `
+    <svg class="file-icon ${isDir ? "folder" : "file"}" viewBox="0 0 24 24" fill="currentColor">
+      ${isDir 
+        ? '<path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>'
+        : '<path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>'
+      }
+    </svg>
+    <div class="file-info">
+      <div class="file-name">${encodedName}</div>
+      <div class="file-meta">${meta}</div>
+    </div>
+    <div class="file-time">${formatMtime(file.mtime)}</div>
+    <button class="more-btn">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+      </svg>
+    </button>
+  `;
+
+  card.addEventListener("click", (e) => {
+    if (!e.target.closest(".more-btn")) {
+      if (isDir) {
+        location.href = url;
+      } else {
+        window.open(url, "_blank");
+      }
+    }
+  });
+
+  card.querySelector(".more-btn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    openMobileMenu(index);
+  });
+
+  $mobileFileList.appendChild(card);
+}
+
+function openMobileMenu(index) {
+  selectedMobileIndex = index;
+  const file = DATA.paths[index];
+  if (!file) return;
+
+  const isDir = file.path_type.endsWith("Dir");
+  const meta = isDir 
+    ? formatDirSize(file.size) 
+    : `${formatFileSize(file.size).join(" ")}`;
+
+  const menu = $mobileActionMenu;
+  menu.querySelector(".file-info-header .name").textContent = file.name;
+  menu.querySelector(".file-info-header .meta").textContent = 
+    (isDir ? "Folder" : "File") + " • " + meta;
+
+  // Hide download for folders (use zip instead)
+  const downloadBtn = menu.querySelector('[data-action="download"]');
+  downloadBtn.style.display = isDir ? "none" : "flex";
+
+  // Show/hide edit based on file type
+  const editBtn = menu.querySelector('[data-action="edit"]');
+  if (editBtn) editBtn.style.display = isDir ? "none" : "flex";
+
+  $mobileOverlay.classList.add("visible");
+  $mobileActionMenu.classList.add("visible");
+}
+
+function closeMobileMenu() {
+  $mobileOverlay.classList.remove("visible");
+  $mobileActionMenu.classList.remove("visible");
+  selectedMobileIndex = null;
+}
+
+async function handleMobileAction(action) {
+  const file = DATA.paths[selectedMobileIndex];
+  if (!file) return;
+
+  const url = newUrl(file.name);
+  const isDir = file.path_type.endsWith("Dir");
+
+  closeMobileMenu();
+
+  switch (action) {
+    case "download":
+      if (isDir) {
+        window.location.href = url + "?zip";
+      } else {
+        window.location.href = url;
+      }
+      break;
+    case "rename":
+      await doMovePath(url);
+      break;
+    case "move":
+      await doMovePath(url);
+      break;
+    case "copy":
+      // Copy functionality - same as move but keep original
+      alert("Copy not implemented yet");
+      break;
+    case "delete":
+      await doDeletePath(file.name, url, () => {
+        DATA.paths[selectedMobileIndex] = null;
+        renderMobilePaths();
+      });
+      break;
   }
 }
 
