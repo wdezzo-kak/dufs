@@ -52,18 +52,6 @@ const IFRAME_FORMATS = [
 
 const MAX_SUBPATHS_COUNT = 1000;
 
-const ICONS = {
-  dir: `<svg height="16" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M13 4H7V3c0-.66-.31-1-1-1H1c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V5c0-.55-.45-1-1-1zM6 4H1V3h5v1z"></path></svg>`,
-  symlinkFile: `<svg height="16" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M8.5 1H1c-.55 0-1 .45-1 1v12c0 .55.45 1 1 1h10c.55 0 1-.45 1-1V4.5L8.5 1zM11 14H1V2h7l3 3v9zM6 4.5l4 3-4 3v-2c-.98-.02-1.84.22-2.55.7-.71.48-1.19 1.25-1.45 2.3.02-1.64.39-2.88 1.13-3.73.73-.84 1.69-1.27 2.88-1.27v-2H6z"></path></svg>`,
-  symlinkDir: `<svg height="16" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M13 4H7V3c0-.66-.31-1-1-1H1c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V5c0-.55-.45-1-1-1zM1 3h5v1H1V3zm6 9v-2c-.98-.02-1.84.22-2.55.7-.71.48-1.19 1.25-1.45 2.3.02-1.64.39-2.88 1.13-3.73C4.86 8.43 5.82 8 7.01 8V6l4 3-4 3H7z"></path></svg>`,
-  file: `<svg height="16" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M6 5H2V4h4v1zM2 8h7V7H2v1zm0 2h7V9H2v1zm0 2h7v-1H2v1zm10-7.5V14c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V2c0-.55.45-1 1-1h7.5L12 4.5zM11 5L8 2H1v12h10V5z"></path></svg>`,
-  download: `<svg width="16" height="16" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>`,
-  move: `<svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/></svg>`,
-  edit: `<svg width="16" height="16" viewBox="0 0 16 16"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/></svg>`,
-  delete: `<svg width="16" height="16" viewBox="0 0 16 16"><path d="M6.854 7.146a.5.5 0 1 0-.708.708L7.293 9l-1.147 1.146a.5.5 0 0 0 .708.708L8 9.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 9l1.147-1.146a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146z"/><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/></svg>`,
-  view: `<svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1"/></svg>`,
-}
-
 /**
  * @type Map<string, Uploader>
  */
@@ -84,7 +72,11 @@ let $pathsTableBody;
 /**
  * @type Element
  */
-let $uploadersTable;
+let $pathsBody;
+/**
+ * @type Element
+ */
+let $uploadersContainer;
 /**
  * @type Element
  */
@@ -106,6 +98,17 @@ let $logoutBtn;
  */
 let $userName;
 
+// Context menu elements
+let $contextOverlay;
+let $contextMenu;
+let $contextName;
+let $contextMeta;
+let $contextIcon;
+let currentSelectedFile = null;
+
+// Mobile action buttons
+let $mobileActions;
+
 // Produce table when window loads
 window.addEventListener("DOMContentLoaded", async () => {
   const $indexData = document.getElementById('index-data');
@@ -124,12 +127,29 @@ async function ready() {
   $pathsTable = document.querySelector(".paths-table");
   $pathsTableHead = document.querySelector(".paths-table thead");
   $pathsTableBody = document.querySelector(".paths-table tbody");
-  $uploadersTable = document.querySelector(".uploaders-table");
+  $pathsBody = document.querySelector(".paths-body");
+  $uploadersContainer = document.querySelector(".uploaders-container");
   $emptyFolder = document.querySelector(".empty-folder");
   $editor = document.querySelector(".editor");
   $loginBtn = document.querySelector(".login-btn");
   $logoutBtn = document.querySelector(".logout-btn");
   $userName = document.querySelector(".user-name");
+  
+  // Context menu elements
+  $contextOverlay = document.querySelector(".context-overlay");
+  $contextMenu = document.querySelector(".context-menu");
+  $contextName = document.querySelector(".context-name");
+  $contextMeta = document.querySelector(".context-meta");
+  $contextIcon = document.querySelector(".context-icon");
+  
+  // Mobile actions
+  $mobileActions = document.querySelector(".mobile-actions");
+
+  // Setup context menu
+  setupContextMenu();
+  
+  // Setup mobile actions
+  setupMobileActions();
 
   addBreadcrumb(DATA.href, DATA.uri_prefix);
 
@@ -174,17 +194,15 @@ class Uploader {
   upload() {
     const { idx, name, url } = this;
     const encodedName = encodedStr(name);
-    $uploadersTable.insertAdjacentHTML("beforeend", `
-  <tr id="upload${idx}" class="uploader">
-    <td class="path cell-icon">
-      ${getPathSvg()}
-    </td>
-    <td class="path cell-name">
-      <a href="${url}">${encodedName}</a>
-    </td>
-    <td class="cell-status upload-status" id="uploadStatus${idx}"></td>
-  </tr>`);
-    $uploadersTable.classList.remove("hidden");
+    $uploadersContainer.insertAdjacentHTML("beforeend", `
+  <div id="upload${idx}" class="uploader-item">
+    <div class="file-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+    </div>
+    <div class="file-name">${encodedName}</div>
+    <div class="upload-status" id="uploadStatus${idx}"></div>
+  </div>`);
+    $uploadersContainer.classList.remove("hidden");
     $emptyFolder.classList.add("hidden");
     this.$uploadStatus = document.getElementById(`uploadStatus${idx}`);
     this.$uploadStatus.innerHTML = '-';
@@ -229,7 +247,6 @@ class Uploader {
     } else {
       ajax.open("PUT", url);
       ajax.send(this.file);
-      // setTimeout(() => ajax.abort(), 3000);
     }
   }
 
@@ -254,14 +271,14 @@ class Uploader {
     const speedText = `${speedValue} ${speedUnit}/s`;
     const progress = formatPercent(((event.loaded + this.uploadOffset) / this.file.size) * 100);
     const duration = formatDuration((event.total - event.loaded) / speed);
-    this.$uploadStatus.innerHTML = `<span style="width: 80px;">${speedText}</span><span>${progress} ${duration}</span>`;
+    this.$uploadStatus.innerHTML = `<span>${speedText}</span><span>${progress} ${duration}</span>`;
     this.uploaded = event.loaded;
     this.lastUptime = now;
   }
 
   complete() {
     const $uploadStatusNew = this.$uploadStatus.cloneNode(true);
-    $uploadStatusNew.innerHTML = `✓`;
+    $uploadStatusNew.innerHTML = `<span style="color: var(--success)">Done</span>`;
     this.$uploadStatus.parentNode.replaceChild($uploadStatusNew, this.$uploadStatus);
     this.$uploadStatus = null;
     failUploaders.delete(this.idx);
@@ -270,7 +287,7 @@ class Uploader {
   }
 
   fail(reason = "") {
-    this.$uploadStatus.innerHTML = `<span style="width: 20px;" title="${reason}">✗</span><span class="retry-btn" id="retry${this.idx}" title="Retry">↻</span>`;
+    this.$uploadStatus.innerHTML = `<span style="color: var(--danger)" title="${reason}">Failed</span><span class="retry-btn" id="retry${this.idx}" title="Retry">Retry</span>`;
     failUploaders.set(this.idx, this);
     Uploader.runnings--;
     Uploader.runQueue();
@@ -330,7 +347,7 @@ function addBreadcrumb(href, uri_prefix) {
     }
     const encodedName = encodedStr(name);
     if (i === 0) {
-      $breadcrumb.insertAdjacentHTML("beforeend", `<a href="${path}" title="Root"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z"/></svg></a>`);
+      $breadcrumb.insertAdjacentHTML("beforeend", `<a href="${path}" title="Root" class="home-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></a>`);
     } else if (i === len - 1) {
       $breadcrumb.insertAdjacentHTML("beforeend", `<b>${encodedName}</b>`);
     } else {
@@ -349,6 +366,10 @@ async function setupIndexPage() {
     $download.title = "Download folder as a .zip file";
     $download.classList.add("dlwt");
     $download.classList.remove("hidden");
+    
+    // Show on mobile too
+    const $mobileDownload = document.querySelector('.mobile-action-btn[data-action="download"]');
+    if ($mobileDownload) $mobileDownload.classList.remove("hidden");
   }
 
   if (DATA.allow_upload) {
@@ -356,6 +377,9 @@ async function setupIndexPage() {
     setupUploadFile();
     setupNewFolder();
     setupNewFile();
+    
+    // Show mobile actions
+    $mobileActions.classList.remove("hidden");
   }
 
   if (DATA.auth) {
@@ -381,13 +405,13 @@ function renderPathsTableHead() {
   const headerItems = [
     {
       name: "name",
-      props: `colspan="2"`,
+      props: ``,
       text: "Name",
     },
     {
       name: "mtime",
       props: ``,
-      text: "Last Modified",
+      text: "Modified",
     },
     {
       name: "size",
@@ -395,26 +419,29 @@ function renderPathsTableHead() {
       text: "Size",
     }
   ];
-  $pathsTableHead.insertAdjacentHTML("beforeend", `
-    <tr>
-      ${headerItems.map(item => {
-    let svg = `<svg width="12" height="12" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"/></svg>`;
+  
+  // Get the paths-header element
+  const $pathsHeader = document.querySelector('.paths-header');
+  if (!$pathsHeader) return;
+  
+  $pathsHeader.innerHTML = `
+    ${headerItems.map(item => {
+    let svg = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>`;
     let order = "desc";
     if (PARAMS.sort === item.name) {
       if (PARAMS.order === "desc") {
         order = "asc";
-        svg = `<svg width="12" height="12" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/></svg>`
+        svg = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>`;
       } else {
-        svg = `<svg width="12" height="12" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/></svg>`
+        svg = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>`;
       }
     }
     const qs = new URLSearchParams({ ...PARAMS, order, sort: item.name }).toString();
-    const icon = `<span>${svg}</span>`
-    return `<th class="cell-${item.name}" ${item.props}><a href="?${qs}">${item.text}${icon}</a></th>`
-  }).join("\n")}
-      <th class="cell-actions">Actions</th>
-    </tr>
-  `);
+    const icon = `<span class="sort-icon">${svg}</span>`;
+    return `<div class="header-${item.name}"><a href="?${qs}">${item.text}${icon}</a></div>`
+  }).join("")}
+    <div class="header-actions"></div>
+  `;
 }
 
 /**
@@ -443,62 +470,101 @@ function renderPathsTableBody() {
 function addPath(file, index) {
   const encodedName = encodedStr(file.name);
   let url = newUrl(file.name);
-  let actionDelete = "";
-  let actionDownload = "";
-  let actionMove = "";
-  let actionEdit = "";
-  let actionView = "";
   let isDir = file.path_type.endsWith("Dir");
+  
   if (isDir) {
     url += "/";
-    if (DATA.allow_archive) {
-      actionDownload = `
-      <div class="action-btn">
-        <a class="dlwt" href="${url}?zip" title="Download folder as a .zip file" download>${ICONS.download}</a>
-      </div>`;
-    }
-  } else {
-    actionDownload = `
-    <div class="action-btn" >
-      <a class="dlwt" href="${url}" title="Download file" download>${ICONS.download}</a>
-    </div>`;
   }
+  
+  let sizeDisplay = isDir ? formatDirSize(file.size) : formatFileSize(file.size).join(" ");
+  let mtimeDisplay = formatMtime(file.mtime);
+  
+  // Build action buttons HTML
+  let actionsHtml = '';
+  
+  if (isDir && DATA.allow_archive) {
+    actionsHtml += `
+      <div class="action-btn">
+        <a class="dlwt" href="${url}?zip" title="Download folder as a .zip file" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </a>
+      </div>`;
+  } else if (!isDir) {
+    actionsHtml += `
+      <div class="action-btn">
+        <a href="${url}" title="Download file" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </a>
+      </div>`;
+  }
+  
   if (DATA.allow_delete) {
     if (DATA.allow_upload) {
-      actionMove = `<div onclick="movePath(${index})" class="action-btn" id="moveBtn${index}" title="Move & Rename">${ICONS.move}</div>`;
       if (!isDir) {
-        actionEdit = `<a class="action-btn" title="Edit file" target="_blank" href="${url}?edit">${ICONS.edit}</a>`;
+        actionsHtml += `<a class="action-btn" title="Edit file" target="_blank" href="${url}?edit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+        </a>`;
       }
     }
-    actionDelete = `
-    <div onclick="deletePath(${index})" class="action-btn" id="deleteBtn${index}" title="Delete">${ICONS.delete}</div>`;
+    actionsHtml += `<div onclick="deletePath(${index})" class="action-btn" id="deleteBtn${index}" title="Delete">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+    </div>`;
   }
-  if (!actionEdit && !isDir) {
-    actionView = `<a class="action-btn" title="View file" target="_blank" href="${url}?view">${ICONS.view}</a>`;
+  
+  if (!isDir) {
+    actionsHtml += `<a class="action-btn" title="View file" target="_blank" href="${url}?view">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+    </a>`;
   }
-  let actionCell = `
-  <td class="cell-actions">
-    ${actionDownload}
-    ${actionView}
-    ${actionMove}
-    ${actionDelete}
-    ${actionEdit}
-  </td>`;
+  
+  if (DATA.allow_delete && DATA.allow_upload) {
+    actionsHtml += `<div onclick="movePath(${index})" class="action-btn" id="moveBtn${index}" title="Move & Rename">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+    </div>`;
+  }
 
-  let sizeDisplay = isDir ? formatDirSize(file.size) : formatFileSize(file.size).join(" ");
+  const iconSvg = isDir 
+    ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`
+    : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>`;
 
-  $pathsTableBody.insertAdjacentHTML("beforeend", `
-<tr id="addPath${index}">
-  <td class="path cell-icon">
-    ${getPathSvg(file.path_type)}
-  </td>
-  <td class="path cell-name">
-    <a href="${url}" ${isDir ? "" : `target="_blank"`}>${encodedName}</a>
-  </td>
-  <td class="cell-mtime">${formatMtime(file.mtime)}</td>
-  <td class="cell-size">${sizeDisplay}</td>
-  ${actionCell}
-</tr>`);
+  $pathsBody.insertAdjacentHTML("beforeend", `
+<div class="path-item" data-index="${index}" data-name="${encodedStr(file.name)}" data-url="${url}" data-isdir="${isDir}">
+  <div class="path-info">
+    <div class="path-icon ${isDir ? 'folder' : ''}">${iconSvg}</div>
+    <div class="path-details">
+      <a href="${url}" ${isDir ? "" : `target="_blank"`} class="path-name">${encodedName}</a>
+      <span class="path-meta">${isDir ? formatDirSize(file.size) : formatFileSize(file.size).join(" ")}</span>
+    </div>
+    <button class="mobile-menu-btn" data-index="${index}">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+    </button>
+  </div>
+  <div class="path-mtime">${mtimeDisplay}</div>
+  <div class="path-size">${sizeDisplay}</div>
+  <div class="path-actions">
+    ${actionsHtml}
+  </div>
+</div>`);
+  
+  // Add click handler for mobile menu button
+  const menuBtn = $pathsBody.lastElementChild.querySelector('.mobile-menu-btn');
+  if (menuBtn) {
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const index = parseInt(menuBtn.dataset.index);
+      openContextMenu(index);
+    });
+  }
+  
+  // Add click handler for path item on mobile (to show context menu)
+  const pathItem = $pathsBody.lastElementChild;
+  pathItem.addEventListener('click', (e) => {
+    // Only trigger on mobile and if not clicking on a link
+    if (window.innerWidth <= 768 && !e.target.closest('a')) {
+      const index = parseInt(pathItem.dataset.index);
+      openContextMenu(index);
+    }
+  });
 }
 
 function setupDropzone() {
@@ -614,6 +680,136 @@ function setupNewFile() {
   });
 }
 
+// Setup context menu functions
+function setupContextMenu() {
+  // Close on overlay click
+  $contextOverlay?.addEventListener("click", closeContextMenu);
+  
+  // Close on cancel button
+  document.querySelector(".context-cancel")?.addEventListener("click", closeContextMenu);
+  
+  // Handle context actions
+  document.querySelectorAll(".context-action").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const action = btn.dataset.action;
+      handleContextAction(action);
+    });
+  });
+}
+
+function openContextMenu(index) {
+  const file = DATA.paths[index];
+  if (!file) return;
+  
+  currentSelectedFile = { index, ...file };
+  
+  const isDir = file.path_type.endsWith("Dir");
+  const sizeDisplay = isDir ? formatDirSize(file.size) : formatFileSize(file.size).join(" ");
+  const typeDisplay = isDir ? "Folder" : "File";
+  
+  // Update context menu content
+  $contextName.textContent = file.name;
+  $contextMeta.textContent = `${typeDisplay} - ${sizeDisplay}`;
+  
+  // Update icon
+  const iconSvg = isDir
+    ? `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`
+    : `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>`;
+  $contextIcon.innerHTML = iconSvg;
+  
+  // Show/hide relevant actions
+  const viewBtn = document.querySelector('.context-action[data-action="view"]');
+  const editBtn = document.querySelector('.context-action[data-action="edit"]');
+  
+  if (viewBtn) viewBtn.style.display = isDir ? 'none' : 'flex';
+  if (editBtn) editBtn.style.display = (isDir || !DATA.allow_delete || !DATA.allow_upload) ? 'none' : 'flex';
+  
+  // Show menu
+  $contextOverlay.classList.remove("hidden");
+  $contextMenu.classList.remove("hidden");
+  
+  // Trigger animation
+  requestAnimationFrame(() => {
+    $contextOverlay.classList.add("visible");
+    $contextMenu.classList.add("visible");
+  });
+}
+
+function closeContextMenu() {
+  $contextOverlay.classList.remove("visible");
+  $contextMenu.classList.remove("visible");
+  
+  setTimeout(() => {
+    $contextOverlay.classList.add("hidden");
+    $contextMenu.classList.add("hidden");
+    currentSelectedFile = null;
+  }, 300);
+}
+
+function handleContextAction(action) {
+  if (!currentSelectedFile) return;
+  
+  const { index, name, path_type } = currentSelectedFile;
+  const isDir = path_type.endsWith("Dir");
+  const url = newUrl(name) + (isDir ? "/" : "");
+  
+  switch (action) {
+    case "download":
+      if (isDir) {
+        window.location.href = url + "?zip";
+      } else {
+        window.location.href = url;
+      }
+      break;
+    case "view":
+      window.open(url, "_blank");
+      break;
+    case "edit":
+      window.open(url + "?edit", "_blank");
+      break;
+    case "move":
+      movePath(index);
+      break;
+    case "delete":
+      deletePath(index);
+      break;
+  }
+  
+  closeContextMenu();
+}
+
+// Setup mobile action buttons
+function setupMobileActions() {
+  document.querySelectorAll(".mobile-action-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const action = btn.dataset.action;
+      
+      switch (action) {
+        case "download":
+          // Trigger folder download
+          const downloadLink = document.querySelector(".download");
+          if (downloadLink && !downloadLink.classList.contains("hidden")) {
+            downloadLink.click();
+          }
+          break;
+        case "upload":
+          // Trigger file input
+          const fileInput = document.getElementById("file");
+          if (fileInput) fileInput.click();
+          break;
+        case "new-folder":
+          const name = prompt("Enter folder name");
+          if (name) createFolder(name);
+          break;
+        case "new-file":
+          const fileName = prompt("Enter file name");
+          if (fileName) createFile(fileName);
+          break;
+      }
+    });
+  });
+}
+
 async function setupEditorPage() {
   const url = baseUrl();
 
@@ -691,7 +887,8 @@ async function deletePath(index) {
   const file = DATA.paths[index];
   if (!file) return;
   await doDeletePath(file.name, newUrl(file.name), () => {
-    document.getElementById(`addPath${index}`)?.remove();
+    const elem = document.querySelector(`.path-item[data-index="${index}"]`);
+    if (elem) elem.remove();
     DATA.paths[index] = null;
     if (!DATA.paths.find(v => !!v)) {
       $pathsTable.classList.add("hidden");
@@ -711,7 +908,7 @@ async function doDeletePath(name, url, cb) {
     await assertResOK(res);
     cb();
   } catch (err) {
-    alert(`Cannot delete \`${file.name}\`, ${err.message}`);
+    alert(`Cannot delete \`${name}\`, ${err.message}`);
   }
 }
 
@@ -885,19 +1082,6 @@ function extName(filename) {
   return filename.substring(dotIndex);
 }
 
-function getPathSvg(path_type) {
-  switch (path_type) {
-    case "Dir":
-      return ICONS.dir;
-    case "SymlinkFile":
-      return ICONS.symlinkFile;
-    case "SymlinkDir":
-      return ICONS.symlinkDir;
-    default:
-      return ICONS.file;
-  }
-}
-
 function formatMtime(mtime) {
   if (!mtime) return "";
   const date = new Date(mtime);
@@ -916,7 +1100,7 @@ function padZero(value, size) {
 function formatDirSize(size) {
   const unit = size === 1 ? "item" : "items";
   const num = size >= MAX_SUBPATHS_COUNT ? `>${MAX_SUBPATHS_COUNT - 1}` : `${size}`;
-  return ` ${num} ${unit}`;
+  return `${num} ${unit}`;
 }
 
 function formatFileSize(size) {
